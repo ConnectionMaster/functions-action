@@ -15,9 +15,10 @@ namespace dotnet3
         [FunctionName("HttpTrigger")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+            ILogger log, ExecutionContext execution)
         {
-            string text = await System.IO.File.ReadAllTextAsync("sha.txt");
+            string filePath = $"{execution.FunctionAppDirectory}/sha.txt";
+            string text = await System.IO.File.ReadAllTextAsync(filePath);
             return new OkObjectResult(text);
         }
     }
