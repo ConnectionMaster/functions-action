@@ -1,4 +1,4 @@
-name: RUN_E2E_TESTS_DOTNET3_LCON
+name: RUN_E2E_TESTS_JAVA8_WCON
 on:
   push:
     branches:
@@ -11,14 +11,15 @@ on:
       - '**.md'
 
 env:
-  AZURE_FUNCTIONAPP_NAME: gae-fa-dotnet3-lcon
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: './tests/e2e/dotnet3'
-  DOTNET_VERSION: '3.1.403'
+  AZURE_FUNCTIONAPP_NAME: gae-fa-java8-wcon
+  POM_XML_DIRECTORY: './tests/e2e/java'
+  POM_FUNCTIONAPP_NAME: functionAppName
+  JAVA_VERSION: '1.8.x'
 
 jobs:
   run:
     name: Run E2E Tests
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -34,17 +35,18 @@ jobs:
     - name: Build GitHub Action
       run: npm run build
 
-    - name: E2E Setup DotNet ${{ env.DOTNET_VERSION }} Environment
-      uses: actions/setup-dotnet@v1
+    - name: E2E Setup Java Sdk ${{ env.JAVA_VERSION }}
+      uses: actions/setup-java@v1
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+        java-version: ${{ env.JAVA_VERSION }}
 
-    - name: E2E Resolve Project Dependencies Using Dotnet
-      shell: pwsh
+    - name: E2E Restore Project Dependencies Using Mvn
+      shell: bash
       run: |
-        pushd '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-        dotnet build --configuration Release --output ./output
-        echo "$env:GITHUB_SHA" > ./output/sha.txt
+        pushd '${{ env.POM_XML_DIRECTORY }}'
+        echo "$GITHUB_SHA" > sha.txt
+        mvn clean package
+        mvn azure-functions:package
         popd
 
     - name: E2E Run Azure Functions Action
@@ -52,8 +54,9 @@ jobs:
       id: fa
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-        publish-profile: ${{ secrets.GAE_FA_DOTNET3_LCON }}
+        package: './${{ env.POM_XML_DIRECTORY }}'
+        publish-profile: ${{ secrets.GAE_FA_JAVA8_WCON }}
+        respect-pom-xml: true
 
     - name: E2E Check HttpTrigger Result
       shell: pwsh
