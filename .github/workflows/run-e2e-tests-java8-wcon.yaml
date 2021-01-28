@@ -12,7 +12,7 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_NAME: gae-fa-java8-wcon
-  POM_XML_DIRECTORY: './tests/e2e/java'
+  POM_XML_DIRECTORY: './tests/e2e/java8'
   POM_FUNCTIONAPP_NAME: functionAppName
   JAVA_VERSION: '1.8.x'
 
