@@ -1,4 +1,4 @@
-name: RUN_E2E_TESTS_DOTNET3_WCON
+name: RUN_E2E_TESTS_DOTNET3_LCON
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ on:
       - '**.md'
 
 env:
-  AZURE_FUNCTIONAPP_NAME: gae-fa-dotnet3-wcon
+  AZURE_FUNCTIONAPP_NAME: gae-fa-dotnet3-lcon
   AZURE_FUNCTIONAPP_PACKAGE_PATH: './tests/e2e/dotnet3'
   DOTNET_VERSION: '3.1.403'
 
