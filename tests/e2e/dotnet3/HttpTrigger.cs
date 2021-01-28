@@ -17,8 +17,7 @@ namespace dotnet3
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            string pwd = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
-            string text = await System.IO.File.ReadAllTextAsync($"{pwd}/sha.txt");
+            string text = await System.IO.File.ReadAllTextAsync("sha.txt");
             return new OkObjectResult(text);
         }
     }
