@@ -1,7 +1,6 @@
 package wincon;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -14,7 +13,7 @@ public class Function {
             HttpMethod.POST }, authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<String>> request,
             final ExecutionContext context) {
 
-        String file = "sha.txt";
+        String file = "/home/site/wwwroot/sha.txt";
         String currentLine = "";
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
